@@ -16,20 +16,20 @@ An open-source project that provides a Docker image designed for running Kotlin-
 
 3. After the build completes, tag your image, so you can push the image to your repository:
 
-   `docker tag kotlin:21 api.repoflow.io/herd.io/docker/kotlin:21`
-   `docker tag kotlin:21 api.repoflow.io/herd.io/docker/kotlin:latest`
+   `docker tag kotlin:21 api.repoflow.io/desiderati/docker/kotlin:21`
+   `docker tag kotlin:21 api.repoflow.io/desiderati/docker/kotlin:latest`
 
 4. Run the following command to push this image to your repository:
 
-   `docker push api.repoflow.io/herd.io/docker/kotlin:21`
-   `docker push api.repoflow.io/herd.io/docker/kotlin:latest`
+   `docker push api.repoflow.io/desiderati/docker/kotlin:21`
+   `docker push api.repoflow.io/desiderati/docker/kotlin:latest`
 
 ### Example
 
    ```
    docker build --progress=plain -t kotlin:21 .
-   docker tag kotlin:21 api.repoflow.io/herd.io/docker/kotlin:21
-   docker tag kotlin:21 api.repoflow.io/herd.io/docker/kotlin:latest
-   docker push api.repoflow.io/herd.io/docker/kotlin:21
-   docker push api.repoflow.io/herd.io/docker/kotlin:latest
+   docker tag kotlin:21 api.repoflow.io/desiderati/docker/kotlin:21
+   docker tag kotlin:21 api.repoflow.io/desiderati/docker/kotlin:latest
+   docker push api.repoflow.io/desiderati/docker/kotlin:21
+   docker push api.repoflow.io/desiderati/docker/kotlin:latest
    ```
