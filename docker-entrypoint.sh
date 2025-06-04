@@ -16,7 +16,7 @@ if ! id -u kotlin >/dev/null 2>&1; then
   echo ""
   echo "Configuring Timezone: ${TZ}"
 
-  ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+  ln -snf /usr/share/zoneinfo/"${TZ}" /etc/localtime && echo "${TZ}" > /etc/timezone
   apt-get update && apt-get install -y tzdata
   echo "Updating daylight savings configuration!"
 
@@ -49,7 +49,7 @@ JAVA_OPTS=$(echo "$JAVA_OPTS" | sed ':a;N;$!ba;s/\n/ /g')
 
 if [[ ${ENABLE_DD_APM} = true ]]; then
   echo "Enabling Datadog Application Performance Monitoring..."
-  JAVA_OPTS="-javaagent:/opt/kotlin-app/dd-java-agent.jar $DD_JAVA_OPTS $JAVA_OPTS"
+  JAVA_OPTS="-javaagent:/opt/kotlin-app/dd-java-agent-1.49.0.jar $DD_JAVA_OPTS $JAVA_OPTS"
 fi
 
 if [[ ${ENABLE_DEBUG} = true ]]; then

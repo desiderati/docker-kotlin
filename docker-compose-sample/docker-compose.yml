@@ -2,7 +2,7 @@ version: '3'
 services:
   kotlin:
     container_name: kotlin
-    image: 'api.repoflow.io/desiderati/docker/kotlin:21'
+    image: 'api.repoflow.io/desiderati/docker/library/kotlin:21'
     ports:
       # Descomentar a linha abaixo para adicionar suporte à depuração remota.
       - '8090:8090'
