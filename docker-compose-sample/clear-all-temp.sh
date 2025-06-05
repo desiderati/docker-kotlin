@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #
 # Copyright (c) 2025 - Felipe Desiderati
 #
@@ -19,17 +18,16 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-if [[ -z ${TZ} ]]; then
-  TZ="America/Sao_Paulo"
-fi
-echo "Configuring Timezone: ${TZ}"
+DIR="$(dirname "${BASH_SOURCE[0]}")"
+DIR="$(cd "$DIR" >/dev/null 2>&1 && pwd)"
+"$DIR"/postinstall.sh
 
-ln -snf /usr/share/zoneinfo/"${TZ}" /etc/localtime && echo "${TZ}" > /etc/timezone
-apt-get install -y tzdata
-echo "Updating daylight savings configuration!"
+echo "[$(date +%c)] Cleaning files not accessed for more than 15 days in directory: $DIR/logs/..."
+sudo find "$DIR"/logs/ -depth -atime +15 -print -delete
+sudo find "$DIR"/logs/ -depth -type d -empty -print -delete
 
-# shellcheck disable=SC2002
-cat /proc/meminfo
-java -XX:+PrintFlagsFinal -version | grep ThreadStackSize
+echo "[$(date +%c)] Cleaning files not accessed for more than 15 days in directory: $DIR/temp/..."
+sudo find "$DIR"/temp/ -depth -atime +15 -print -delete
+sudo find "$DIR"/temp/ -depth -type d -empty -print -delete
 
-supervisord -c /etc/supervisor/supervisord.conf
+"$DIR"/init.sh

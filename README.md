@@ -103,7 +103,7 @@ services:
       - '9090:9090'
 
       # Port for remote debugging
-      #- '8090:8090'
+      #- '9091:8090'
 
       # Port for JMX monitoring (uncomment if needed)
       #- '9010:9010'
@@ -143,7 +143,7 @@ services:
        #- ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
        
        # Mount temporary files
-      - ./tmp/:/tmp/
+      - ./temp/:/tmp/
 
       # Mount configuration files
       - ./config/:/opt/kotlin-app/config/
@@ -219,7 +219,7 @@ and control multiple processes within a single container.
    nodaemon=true
    user=root
 
-   [program:app]
+   [program:kotlin-app]
    command=java -javaagent:/opt/kotlin-app/jmx_prometheus_javaagent-1.3.0.jar=9404:/opt/kotlin-app/prometheus.yml -Xms%(ENV_JAVA_XMS)s -Xmx%(ENV_JAVA_XMX)s -Duser.timezone="$TZ" -Dlogging.config=file:/opt/kotlin-app/logback.xml -Dhazelcast.logging.type=slf4j -Djava.net.preferIPv4Stack=true --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED -jar /opt/kotlin-app/app.jar
    directory=/opt/kotlin-app
    autostart=true

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #
 # Copyright (c) 2025 - Felipe Desiderati
 #
@@ -19,17 +18,20 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-if [[ -z ${TZ} ]]; then
-  TZ="America/Sao_Paulo"
-fi
-echo "Configuring Timezone: ${TZ}"
+DIR="$(dirname "${BASH_SOURCE[0]}")"
+DIR="$(cd "$DIR" >/dev/null 2>&1 && pwd)"
 
-ln -snf /usr/share/zoneinfo/"${TZ}" /etc/localtime && echo "${TZ}" > /etc/timezone
-apt-get install -y tzdata
-echo "Updating daylight savings configuration!"
+echo "[$(date +%c)] Applying ACL fix for directory: $DIR/logs/..."
+sudo setfacl -R -d -m u::rw- "$DIR"/logs/
+sudo setfacl -R -m g::rw- "$DIR"/logs/
+sudo setfacl -R -m o::r-- "$DIR"/logs/
 
-# shellcheck disable=SC2002
-cat /proc/meminfo
-java -XX:+PrintFlagsFinal -version | grep ThreadStackSize
+echo "[$(date +%c)] Applying fix for application ownership..."
+sudo find "$DIR" -exec chown "$UID":"$UID" {} +
 
-supervisord -c /etc/supervisor/supervisord.conf
+echo "[$(date +%c)] Applying file access permissions fix..."
+sudo find "$DIR" -type f -exec chmod u+rw,g+rw,o=r {} \;
+
+echo "[$(date +%c)] Applying directory access permissions fix..."
+sudo find "$DIR" -type d -exec chmod u=rwx,g=rwx,o=rx {} \;
+sudo chmod 777 "$DIR"/temp/

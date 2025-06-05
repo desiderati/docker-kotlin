@@ -204,3 +204,4 @@ generated-resources/
 generated-sources/
 activemq-data/
 activemq/
+/docker-compose-sample/temp/

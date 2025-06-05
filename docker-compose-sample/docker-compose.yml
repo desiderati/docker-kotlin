@@ -4,33 +4,30 @@ services:
     container_name: kotlin
     image: 'api.repoflow.io/desiderati/docker/library/kotlin:21'
     ports:
-      # Descomentar a linha abaixo para adicionar suporte à depuração remota.
-      - '8090:8090'
+      # Uncomment the line below to enable remote debugging support.
+      - '9091:8090'
 
-      # Descomentar a linha abaixo para adicionar suporte ao Agente JMX.
+      # Uncomment the line below to enable JMX Agent support.
       #- 9010:9010
 
     environment:
-      # Executar id -u ${USER}, de modo a descobrir o Id do usuário local.
-      # Os arquivos gerados nos volumes mapeados, terão as permissões do usuário local.
+      # Run id -u ${USER} to find out the local user's ID.
+      # Files generated in the mapped volumes will have the local user's permissions.
       - LOCAL_USER_ID=1000
 
-      # Descomentar a linha abaixo para adicionar suporte à depuração remota.
+      # Uncomment the line below to enable remote debugging support.
       - ENABLE_DEBUG=true
 
-      # Descomentar a linha abaixo para adicionar suporte ao Agente JMX.
+      # Uncomment the line below to enable JMX Agent support.
       #- ENABLE_JMX=true
 
-      # Variáveis do sistema.
+      # System variables.
       - LOG_FILE=/opt/kotlin-app/logs/kotlin.log
       - JAVA_XMX=512m
       - JAVA_CPUS=1
       - TZ=America/Sao_Paulo
 
     volumes:
-      - ./tmp/:/tmp/
+      - ./temp/:/tmp/
       - ./config/:/opt/kotlin-app/config/
-      - ./logs/:/opt/kotlin-app/logs/
-
-      # Define a aplicação a ser executada. Descomentar a linha abaixo.
-      #- ./modules/kotlin-exec.jar:/opt/kotlin-app/app.jar
+      - ./logs/:/opt/kotlin-app/logs

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #
 # Copyright (c) 2025 - Felipe Desiderati
 #
@@ -19,17 +18,11 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-if [[ -z ${TZ} ]]; then
-  TZ="America/Sao_Paulo"
-fi
-echo "Configuring Timezone: ${TZ}"
+DIR="$(dirname "${BASH_SOURCE[0]}")"
+DIR="$(cd "$DIR" >/dev/null 2>&1 && pwd)"
 
-ln -snf /usr/share/zoneinfo/"${TZ}" /etc/localtime && echo "${TZ}" > /etc/timezone
-apt-get install -y tzdata
-echo "Updating daylight savings configuration!"
+echo "[$(date +%c)] Creating the application's default directories..."
+sudo mkdir -p "$DIR"/logs/
+sudo mkdir -p "$DIR"/temp/
 
-# shellcheck disable=SC2002
-cat /proc/meminfo
-java -XX:+PrintFlagsFinal -version | grep ThreadStackSize
-
-supervisord -c /etc/supervisor/supervisord.conf
+"$DIR"/postinstall.sh

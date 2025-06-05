@@ -1,4 +1,23 @@
 #!/bin/bash
+#
+# Copyright (c) 2025 - Felipe Desiderati
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+# associated documentation files (the "Software"), to deal in the Software without restriction,
+# including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all copies or substantial
+# portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+# LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
@@ -25,27 +44,27 @@ if ! id -u kotlin >/dev/null 2>&1; then
   locale -a
 fi
 
-# Garante que não terão quebras de linha na variável JAVA_OPTS.
+# Ensures there are no line breaks in the JAVA_OPTS variable.
 JAVA_OPTS=$(echo "$JAVA_OPTS" | sed ':a;N;$!ba;s/\n/ /g')
 
-# - A parte `:a;N;$!ba;` é um loop que irá ler todo o texto, incluindo as quebras de linha.
-# - A parte `s/\n/ /g` substitui todas as quebras de linha (\n) por espaços.
+# - The `:a;N;$!ba;` part is a loop that reads the entire input, including line breaks.
+# - The `s/\n/ /g` part replaces all line breaks (\n) with spaces.
 
-# O loop `:a;N;$!ba;` no comando `sed` é usado para lidar com múltiplas linhas de entrada.
-# Aqui está o que cada parte faz:
+# The `:a;N;$!ba;` loop in the `sed` command is used to handle multi-line input.
+# Here's what each part does:
 #
-# - `:a` cria um rótulo chamado 'a'.
-# - `N` adiciona a próxima linha de entrada ao padrão de espaço do comando `sed`.
-# - `$!ba` se não for a última linha de entrada, vá para o rótulo 'a'.
+# - `:a` creates a label named 'a'.
+# - `N` appends the next input line to the pattern space.
+# - `$!ba` if not the last line, go back to label 'a'.
 #
-# Este loop é necessário porque, por padrão, o `sed` lê e processa a entrada linha por linha.
-# Se você tem várias linhas de entrada e quer fazer uma substituição que abrange várias linhas
-# (como substituir quebras de linha por espaços), você precisa primeiro dizer ao `sed` para ler
-# todas as linhas de entrada de uma vez. Isso é o que o loop `:a;N;$!ba;` faz.
+# This loop is necessary because, by default, `sed` processes input line by line.
+# If your input contains multiple lines and you want to apply a substitution across
+# all of them (e.g., replacing line breaks with spaces), you must first instruct
+# `sed` to load the entire input at once. That’s what the loop does.
 #
-# Se você sabe que sua entrada sempre será uma única linha, você pode omitir o loop e usar apenas `s/\n/ /g`
-# para substituir as quebras de linha por espaços. No entanto, se sua entrada pode ter várias linhas,
-# é melhor usar o loop para garantir que todas as quebras de linha sejam substituídas corretamente.
+# If you're sure your input will always be a single line, you can skip the loop
+# and use just `s/\n/ /g`. However, if multiple lines are possible, it’s safer
+# to use the loop to ensure proper replacement of all line breaks.
 
 if [[ ${ENABLE_DD_APM} = true ]]; then
   echo "Enabling Datadog Application Performance Monitoring..."
@@ -62,11 +81,11 @@ if [[ ${ENABLE_JMX} = true ]]; then
   JAVA_OPTS="${JAVA_OPTS} -Dcom.sun.management.jmxremote"
   JAVA_OPTS="${JAVA_OPTS} -Dcom.sun.management.jmxremote.port=9010"
   JAVA_OPTS="${JAVA_OPTS} -Dcom.sun.management.jmxremote.rmi.port=9010"
-  JAVA_OPTS="${JAVA_OPTS} -Dcom.sun.management.jmxremote.authenticate=false" # Somente é acessado pela rede interna.
+  JAVA_OPTS="${JAVA_OPTS} -Dcom.sun.management.jmxremote.authenticate=false" # Only accessible from the internal network.
   JAVA_OPTS="${JAVA_OPTS} -Dcom.sun.management.jmxremote.ssl=false"
   JAVA_OPTS="${JAVA_OPTS} -Dcom.sun.management.jmxremote.local.only=true"
-  # Como o ECS somente tem uma única interface de rede, não precisamos definir este valor!
-  # JAVA_OPTS="${JAVA_OPTS} -Djava.rmi.server.hostname=xxx.xxx.xxx.xxx"
+  # Since ECS only has a single network interface, we don't need to define this value!
+  #JAVA_OPTS="${JAVA_OPTS} -Djava.rmi.server.hostname=xxx.xxx.xxx.xxx"
   JAVA_OPTS="${JAVA_OPTS} -Djava.net.preferIPv4Stack=true"
 fi
 
