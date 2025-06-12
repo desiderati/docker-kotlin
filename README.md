@@ -1,4 +1,4 @@
-# Custom Docker Image for Kotlin-based Applications
+# Custom Docker Image for Kotlin-based Applications [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 An open-source project that provides a Docker image designed for running Kotlin-based applications.
 
@@ -233,6 +233,7 @@ and control multiple processes within a single container.
    autorestart=true
    stdout_logfile=/dev/stdout
    stdout_logfile_maxbytes=0
+
    stderr_logfile=/dev/stderr
    stderr_logfile_maxbytes=0
    ```
@@ -264,7 +265,3 @@ For more information about Supervisor, visit the [official documentation](http:/
 ## Author
 
 Felipe Desiderati <felipedesiderati@springbloom.dev> (https://github.com/desiderati)
-
-## [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
