@@ -1,44 +1,51 @@
-# docker-kotlin
+# Custom Docker Image for Kotlin-based Applications
 
 An open-source project that provides a Docker image designed for running Kotlin-based applications.
 
 ## What This Image Does
 
-This customized Kotlin Docker image is built on top of `openjdk:21-jdk-slim-bullseye` and includes several enhancements 
+This customized Kotlin Docker image is built on top of `openjdk:21-jdk-slim-bullseye` and includes several enhancements
 for production-ready Kotlin applications:
 
 ### Core Features
+
 - **Java 21**: Latest LTS version of Java for optimal performance and features
 - **Locale Configuration**: Preconfigured with en_US.UTF-8 locale
 - **Timezone Support**: Default timezone set to America/Sao_Paulo, configurable via environment variables
 - **User Management**: Creates a non-root 'kotlin' user for better security
 
 ### Development & Debugging Tools
+
 - **Remote Debugging**: Optional JVM debugging on port 8090 (enabled via ENABLE_DEBUG)
 - **Utility Tools**: Includes curl, wget, vim, and net-tools for troubleshooting
 - **Wait-for-it Script**: Utility for service dependency management
 
 ### Monitoring & Observability
+
 - **Prometheus Integration**: Built-in JMX exporter on port 9404 for metrics collection
 - **Datadog APM**: Optional Datadog Java agent for application performance monitoring
 - **JMX Support**: Optional JMX monitoring on port 9010 (enabled via ENABLE_JMX)
 
 ### Document Generation
+
 - **HTML to PDF Conversion**: Includes wkhtmltopdf for generating PDF documents from HTML templates
 
 ### Process Management
-- **Supervisord**: Includes [Supervisor](https://supervisord.org/) for managing and monitoring processes, 
+
+- **Supervisord**: Includes [Supervisor](https://supervisord.org/) for managing and monitoring processes,
   configured to run in non-daemon mode
 - **Process Control**: Start-supervisor script available at `/opt/start-supervisor.sh` for easy process management
-- **Multi-Process Applications**: Allows running multiple processes in a single container, ideal for microservices 
+- **Multi-Process Applications**: Allows running multiple processes in a single container, ideal for microservices
   or applications with multiple components
 
 ### Performance Tuning
+
 - **Memory Management**: Configurable heap settings via JAVA_XMS and JAVA_XMX
 - **CPU Optimization**: Parallel GC and ForkJoinPool thread configuration via JAVA_CPUS
 - **Metaspace Configuration**: Optimized metaspace settings for Java applications
 
 ### Environment Variables
+
 - `PROFILE`: Sets Spring profiles for application configuration
 - `LOCAL_USER_ID`: Configures the user ID for the 'kotlin' user (default: 1000)
 - `ENABLE_DEBUG`: Enables remote debugging (true/false)
@@ -51,7 +58,7 @@ for production-ready Kotlin applications:
 
 ## Prerequisites
 
-Ensure Docker is installed on your machine. 
+Ensure Docker is installed on your machine.
 If not, download and install it from the [Docker official website](https://www.docker.com/get-started/)
 
 ## How to build
@@ -88,7 +95,7 @@ If not, download and install it from the [Docker official website](https://www.d
 
 ## How to Use
 
-You can use this image in your projects by referencing it in a `docker-compose.yml` file 
+You can use this image in your projects by referencing it in a `docker-compose.yml` file
 or directly with Docker commands.
 
 ### Docker Compose Example
@@ -139,10 +146,10 @@ services:
       - LOG_FILE=/opt/kotlin-app/logs/kotlin.log
 
     volumes:
-       # Uncomment to mount supervisord configuration (optional)
-       #- ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
-       
-       # Mount temporary files
+      # Uncomment to mount supervisord configuration (optional)
+      #- ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+
+      # Mount temporary files
       - ./temp/:/tmp/
 
       # Mount configuration files
@@ -206,7 +213,7 @@ When `ENABLE_DEBUG=true`, you can connect a remote debugger to port 8090.
 
 ### Using Supervisord for Process Management
 
-This image includes [Supervisor](http://supervisord.org/), a process control system that allows you to monitor 
+This image includes [Supervisor](http://supervisord.org/), a process control system that allows you to monitor
 and control multiple processes within a single container.
 
 #### How to Use Supervisord
@@ -254,6 +261,10 @@ and control multiple processes within a single container.
 
 For more information about Supervisor, visit the [official documentation](http://supervisord.org/).
 
-## License
+## Author
 
-This project is licensed under the MIT License.
+Felipe Desiderati <felipedesiderati@springbloom.dev> (https://github.com/desiderati)
+
+## [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
